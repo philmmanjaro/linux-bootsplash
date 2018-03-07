@@ -2,15 +2,15 @@ diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
 index 2ebaba16f785..416735ab6dc1 100644
 --- a/drivers/tty/vt/vt.c
 +++ b/drivers/tty/vt/vt.c
-@@ -102,6 +102,7 @@
- #include <linux/uaccess.h>
+@@ -104,6 +104,7 @@
  #include <linux/kdb.h>
  #include <linux/ctype.h>
+ #include <linux/bsearch.h>
 +#include <linux/bootsplash.h>
  
  #define MAX_NR_CON_DRIVER 16
  
-@@ -3903,6 +3904,7 @@ void do_unblank_screen(int leaving_gfx)
+@@ -3902,6 +3903,7 @@ void do_unblank_screen(int leaving_gfx)
  	}
  
  	console_blanked = 0;
