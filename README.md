@@ -1,9 +1,8 @@
-====================
 The Linux bootsplash
 ====================
 
-:Date: November, 2017
-:Author: Max Staudt <mstaudt@suse.de>
+Date: November, 2017
+Author: Max Staudt <mstaudt@suse.de>
 
 
 The Linux bootsplash is a graphical replacement for the '``quiet``' boot
