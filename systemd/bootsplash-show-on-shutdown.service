@@ -1,12 +1,10 @@
 [Unit]
 Description=Show bootsplash on system halt, power off, reboot, or kexec
-After=getty@tty1.service display-manager.service
 Before=systemd-halt.service
 Before=systemd-kexec.service
 Before=systemd-poweroff.service
 Before=systemd-reboot.service
 DefaultDependencies=no
-ConditionKernelCommandLine=bootsplash.enable=1
 ConditionPathExists=/sys/devices/platform/bootsplash.0/enabled
 
 [Service]

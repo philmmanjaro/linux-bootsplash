@@ -1,19 +1,14 @@
 [Unit]
 Description=Hide bootsplash after starting the system
-After=rc-local.service systemd-user-sessions.service
-After=console-getty.service
-After=console-shell.service
-After=getty@tty1.service
-After=display-manager.service
+After=graphical.target
 DefaultDependencies=no
 ConditionPathExists=/sys/devices/platform/bootsplash.0/enabled
 
 [Service]
-ExecStart=-/bin/sh -c 'exec /bin/echo off > /sys/devices/platform/bootsplash.0/enabled'
+ExecStartPre=/bin/sh -c 'exec /bin/sleep 15'
+ExecStart=/bin/sh -c 'exec /bin/echo off > /sys/devices/platform/bootsplash.0/enabled'
 Restart=no
 Type=oneshot
 
 [Install]
-WantedBy=multi-user.target
-WantedBy=emergency.target
-WantedBy=rescue.target
+WantedBy=graphical.target
