@@ -2,20 +2,20 @@ diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
 index 2ebaba16f785..416735ab6dc1 100644
 --- a/drivers/tty/vt/vt.c
 +++ b/drivers/tty/vt/vt.c
-@@ -104,6 +104,7 @@
- #include <linux/kdb.h>
+@@ -105,6 +105,7 @@
  #include <linux/ctype.h>
  #include <linux/bsearch.h>
+ #include <linux/gcd.h>
 +#include <linux/bootsplash.h>
  
  #define MAX_NR_CON_DRIVER 16
  
-@@ -3902,6 +3903,7 @@ void do_unblank_screen(int leaving_gfx)
+@@ -4235,6 +4236,7 @@ void do_unblank_screen(int leaving_gfx)
  	}
  
  	console_blanked = 0;
 +	bootsplash_mark_dirty();
- 	if (vc->vc_sw->con_blank(vc, 0, leaving_gfx) || vt_force_oops_output(vc))
+ 	if (vc->vc_sw->con_blank(vc, 0, leaving_gfx))
  		/* Low-level driver cannot restore -> do it ourselves */
  		update_screen(vc);
 diff --git a/drivers/video/fbdev/core/bootsplash.c b/drivers/video/fbdev/core/bootsplash.c
