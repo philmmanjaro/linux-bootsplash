@@ -1,0 +1,34 @@
+#!/bin/bash -e
+ 
+# Let's search for installed themes
+echo "Searching for available themes..."
+themes=()
+for i in /usr/lib/initcpio/install/bootsplash-*; do
+    themes+=(`basename $i`)
+done
+  
+# So what have we found there?
+if [ "${#themes[*]}" == "0" ]; then                 
+    echo "No themes found"
+else
+    echo "Found ${#themes[*]} themes"
+fi
+
+# Now let's look inside the mkinitcpio.conf and get the HOOKS list
+echo "Checking mkinitcpio.conf ..."
+hooks=(`cat /etc/mkinitcpio.conf | grep '^HOOKS' | sed "s/HOOKS=\"//; s/\"/ /; s/ /\n/g; s/bootsplash-.*\s//g"`)            # without any themes
+ 
+# We also want to know what themes are already included
+themes_included=(`cat /etc/mkinitcpio.conf | grep '^HOOKS' | sed 's/HOOKS="//; s/"/ /; s/ /\n/g' | grep "bootsplash-"`)     # themes only
+  
+# Compare found and included theme lists to understand if we need to edit mkinitcpio.conf
+# If lists are equal - there's nothing to do
+if [[ "${#themes_included[*]}" == "${#themes[*]}" && -z "$(echo ${themes[@]} ${themes_included[@]} | tr ' ' '\n' | sort | uniq -u)" ]]; then                                                           
+    echo "HOOKS are OK"
+ 
+# If not - we will cynchronize HOOKS with available themes list
+else
+    cp /etc/mkinitcpio.conf /etc/mkinitcpio.conf.bak
+    echo -e "Updated/deleted themes detected\nSynchronizing HOOKS..."
+    sed -i "/^HOOKS=\".*\"/c HOOKS=\"$(echo ${hooks[@]} ${themes[@]} | tr ' ' '\  ')\"" /etc/mkinitcpio.conf
+fi

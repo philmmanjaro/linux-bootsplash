@@ -1,0 +1,10 @@
+[Trigger]
+Operation = Install
+Operation = Remove
+Type = Package
+Target = bootsplash-theme-*
+
+[Action]
+Description = Update bootsplash themes
+When = PostTransaction
+Exec = /usr/share/libalpm/scripts/bootsplash-hooks
